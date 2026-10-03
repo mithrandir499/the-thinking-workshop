@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Thinking Workshop</title>
+<meta name="description" content="A personal workshop for ideas, music, art, philosophy, electronics, and things worth understanding.">
+<style>
+  :root{
+    --paper:#f4f1e8;
+    --ink:#20201d;
+    --muted:#706f68;
+    --line:#d8d3c7;
+    --accent:#8b1e24;
+    --panel:#ebe7dc;
+    --max:1180px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family: Georgia, "Times New Roman", serif;
+    line-height:1.65;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:auto;padding:0 28px}
+  header{
+    border-bottom:1px solid var(--line);
+    padding:24px 0;
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .brand{font-family:Georgia,serif;font-size:18px;letter-spacing:.03em;text-transform:none}
+  .links{display:flex;gap:24px;color:var(--muted)}
+  .links a:hover{color:var(--accent)}
+  .hero{
+    min-height:72vh;
+    display:grid;
+    align-items:center;
+    padding:90px 0 110px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:22px;
+  }
+  h1{
+    font-size:clamp(58px,9vw,126px);
+    line-height:.88;
+    font-weight:400;
+    letter-spacing:-.055em;
+    margin:0 0 32px;
+    max-width:950px;
+  }
+  .intro{
+    font-size:clamp(20px,2.2vw,29px);
+    line-height:1.35;
+    max-width:720px;
+    color:#42413c;
+    margin:0;
+  }
+  .rule{
+    width:70px;height:2px;background:var(--accent);margin:42px 0 0;
+  }
+  section{padding:100px 0;border-bottom:1px solid var(--line)}
+  .section-head{
+    display:grid;grid-template-columns:1fr 2fr;gap:50px;margin-bottom:55px;
+  }
+  .section-label{
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:12px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);
+  }
+  h2{font-size:clamp(36px,5vw,64px);line-height:1;margin:0;font-weight:400;letter-spacing:-.035em}
+  .grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);
+  }
+  .card{
+    background:var(--paper);padding:36px;min-height:250px;transition:.2s;
+  }
+  .card:hover{background:var(--panel)}
+  .number{
+    font-family:Arial,Helvetica,sans-serif;font-size:11px;color:var(--accent);
+    letter-spacing:.12em;
+  }
+  .card h3{font-size:30px;font-weight:400;margin:42px 0 12px}
+  .card p{color:var(--muted);margin:0}
+  .quote{
+    max-width:900px;margin:auto;text-align:center;
+    font-size:clamp(28px,4vw,52px);line-height:1.15;font-style:italic;
+  }
+  .quote small{
+    display:block;font-family:Arial,Helvetica,sans-serif;font-size:11px;
+    font-style:normal;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-top:28px;
+  }
+  .manifesto{
+    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;
+  }
+  .manifesto p{font-size:21px;margin:0 0 20px}
+  .manifesto .large{font-size:34px;line-height:1.25}
+  footer{
+    padding:32px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;
+    color:var(--muted);display:flex;justify-content:space-between;gap:20px;
+  }
+  @media(max-width:760px){
+    .links{display:none}
+    .hero{min-height:68vh;padding:70px 0}
+    .section-head,.manifesto{grid-template-columns:1fr;gap:25px}
+    .grid{grid-template-columns:1fr}
+    section{padding:70px 0}
+    footer{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#">The Thinking Workshop</a>
+      <div class="links">
+        <a href="#workshop">Workshop</a>
+        <a href="#notes">Notes</a>
+        <a href="#about">About</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Anurag Kumar · India</div>
+        <h1>The Thinking<br>Workshop</h1>
+        <p class="intro">
+          A place for ideas, experiments, music, art, philosophy,
+          electronics—and the things that become interesting when
+          different disciplines meet.
+        </p>
+        <div class="rule"></div>
+      </div>
+    </section>
+
+    <section id="workshop">
+      <div class="section-head">
+        <div class="section-label">01 / The Workshop</div>
+        <h2>Things worth<br>exploring.</h2>
+      </div>
+
+      <div class="grid">
+        <a class="card" href="#">
+          <span class="number">01</span>
+          <h3>Philosophy</h3>
+          <p>Questions about knowledge, existence, reason, freedom, and the way we understand the world.</p>
+        </a>
+        <a class="card" href="#">
+          <span class="number">02</span>
+          <h3>Music</h3>
+          <p>Bach, Mozart, Beethoven, and the strange architecture of sound, emotion, form, and time.</p>
+        </a>
+        <a class="card" href="#">
+          <span class="number">03</span>
+          <h3>Electronics</h3>
+          <p>Circuits, measurements, microcontrollers, machines, experiments, failures, and things that work.</p>
+        </a>
+        <a class="card" href="#">
+          <span class="number">04</span>
+          <h3>Art & Literature</h3>
+          <p>Books, paintings, films, architecture, and works that remain in the mind long after they are finished.</p>
+        </a>
+        <a class="card" href="#">
+          <span class="number">05</span>
+          <h3>Projects</h3>
+          <p>Things being built—not necessarily finished, polished, or commercially useful. The workshop is allowed to be messy.</p>
+        </a>
+        <a class="card" href="#notes">
+          <span class="number">06</span>
+          <h3>Notes</h3>
+          <p>Fragments of thought, observations, questions, diagrams, and discoveries worth keeping.</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="notes">
+      <div class="quote">
+        “The important thing is not to stop questioning.”
+        <small>— Albert Einstein</small>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="section-head">
+        <div class="section-label">02 / About</div>
+        <h2>A workshop, not a showroom.</h2>
+      </div>
+      <div class="manifesto">
+        <p class="large">
+          I don't want this place to pretend that everything is finished.
+        </p>
+        <div>
+          <p>
+            The Thinking Workshop is a personal space for following curiosity.
+            Some things here may become essays. Some may become circuits.
+            Some may simply remain questions.
+          </p>
+          <p>
+            The common thread is simple: to look closely, learn something,
+            make something, and occasionally change one's mind.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;width:100%;gap:20px;">
+    <span>© 2026 The Thinking Workshop</span>
+    <span>Ideas · Art · Music · Technology</span>
+  </div>
+</footer>
+
+</body>
+</html>
