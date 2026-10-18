@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10231e">
+  <meta name="description" content="From an LED blink to observing GPIOC ODR13 change in silicon: a first-hand STM32 Black Pill embedded systems laboratory notebook.">
+  <meta property="og:title" content="STM32 Black Pill Lab 01 — The Thinking Workshop">
+  <meta property="og:description" content="A first STM32 firmware experiment, documented from SWD wiring to stepping through hardware registers.">
+  <meta property="og:type" content="article">
+  <title>STM32 Black Pill: From Code to Hardware · The Thinking Workshop</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#article">Skip to article</a>
+  <header class="site-header">
+    <div class="wrap nav-row">
+      <a class="brand" href="https://thethinkingworkshop.com/" aria-label="The Thinking Workshop, homepage">
+        <span class="brand-symbol" aria-hidden="true">t<span>.</span></span>
+        <span class="brand-name">THE THINKING<br>WORKSHOP</span>
+      </a>
+      <nav class="nav-links" aria-label="Page navigation">
+        <a href="#overview">Overview</a>
+        <a href="#firmware">Firmware</a>
+        <a href="#debugger">Debugging</a>
+        <a href="#registers">Registers</a>
+      </nav>
+      <a class="nav-pdf" href="STM32-Black-Pill-Lab-01.pdf" download><span aria-hidden="true">↧</span> Field notes · PDF</a>
+    </div>
+  </header>
+  <main id="article">
+    <section class="hero" id="overview">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="line"></span> EMBEDDED SYSTEMS <span class="dot">·</span> LAB NOTE 001</div>
+          <h1>From a blinking LED<br>to <em>reading silicon.</em></h1>
+          <p class="hero-lede">A hands-on STM32 Black Pill learning log, from the first ST-LINK connection to stepping through code and watching a hardware register change.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#journey">Explore the experiment <span aria-hidden="true">↗</span></a>
+            <a class="btn btn-ghost" href="STM32-Black-Pill-Lab-01.pdf" download>Download notes <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="hero-meta"><span>18 OCT 2026</span><span class="sep"></span><span>STM32F401 FAMILY</span><span class="sep"></span><span>FIRST-HAND EXPERIMENT</span></div>
+        </div>
+        <figure class="hero-photo">
+          <img src="assets/board.webp" alt="Close-up photograph of the actual STM32 Black Pill development board used in the experiment" fetchpriority="high">
+          <figcaption><span class="fig-num">FIG. 01</span> The board on the workbench <span class="fig-end">PHOTOGRAPH / ORIGINAL</span></figcaption>
+          <span class="photo-cross cross-top" aria-hidden="true">+</span><span class="photo-cross cross-bottom" aria-hidden="true">+</span>
+        </figure>
+      </div>
+    </section>
+    <section class="intro section-pad">
+      <div class="wrap intro-grid">
+        <p class="section-counter">01 / THE QUESTION</p>
+        <div><h2>What is actually happening <em>inside</em> the microcontroller?</h2><p>The goal began simply: make the onboard blue LED blink. But once the firmware worked, the interesting part was no longer the LED. It was seeing a C statement turn into a change in <strong>bit 13 of a real peripheral register</strong>.</p></div>
+        <aside class="outcome"><span class="mini-label">LAB RESULT</span><strong>SUCCESS</strong><span>Flash verified · LED blink confirmed · hardware breakpoint triggered · ODR13 observed</span></aside>
+      </div>
+    </section>
+    <section class="section-pad section-tint" id="journey">
+      <div class="wrap">
+        <div class="section-heading"><div><p class="section-counter">02 / THE BUILD LOG</p><h2>Seven steps from blank project <em>to working hardware.</em></h2></div><p>A complete record of what worked, including the mistakes that taught us something.</p></div>
+        <div class="flowchart" aria-label="The experiment workflow: SWD wiring, CubeMX configuration, HAL code, build, flash, breakpoint, GPIOC register inspection">
+          <div><span>01</span><strong>WIRE</strong><small>SWD / ST-LINK</small></div><i aria-hidden="true">→</i>
+          <div><span>02</span><strong>CONFIGURE</strong><small>PC13 / CubeMX</small></div><i aria-hidden="true">→</i>
+          <div><span>03</span><strong>CODE</strong><small>main.c / HAL</small></div><i aria-hidden="true">→</i>
+          <div><span>04</span><strong>FLASH</strong><small>Build / verify</small></div><i aria-hidden="true">→</i>
+          <div><span>05</span><strong>INSPECT</strong><small>F6 / ODR13</small></div>
+        </div>
+        <ol class="journey">
+          <li><span class="step-num">01</span><div><h3>Wire the programmer</h3><p>ST-LINK V2 through SWDIO, SWCLK and common GND, with an appropriate target-voltage reference.</p></div><span class="step-state">CONNECTED ✓</span></li>
+          <li><span class="step-num">02</span><div><h3>Configure the MCU</h3><p>STM32CubeMX: PC13 as push-pull GPIO output, initial HIGH; SYS Debug set to Serial Wire.</p></div><span class="step-state">CONFIGURED ✓</span></li>
+          <li><span class="step-num">03</span><div><h3>Generate the HAL project</h3><p>Project <code>BlackPill_LED_Blink</code>, generated for STM32CubeIDE with startup and driver files.</p></div><span class="step-state">GENERATED ✓</span></li>
+          <li><span class="step-num">04</span><div><h3>Write the application loop</h3><p>Two lines in <code>main()</code>: toggle PC13, then delay. We corrected an initial placement inside <code>Error_Handler()</code>.</p></div><span class="step-state">CORRECTED ✓</span></li>
+          <li><span class="step-num">05</span><div><h3>Compile the firmware</h3><p>STM32CubeIDE compiled the corrected source with <strong>0 errors and 0 warnings</strong>.</p></div><span class="step-state">BUILT ✓</span></li>
+          <li><span class="step-num">06</span><div><h3>Flash and run</h3><p>ST-LINK reported <code>Download verified successfully</code>. The onboard LED blinked as expected.</p></div><span class="step-state">VERIFIED ✓</span></li>
+          <li><span class="step-num">07</span><div><h3>Halt and inspect</h3><p>Breakpoint at <code>main.c:97</code>. Step Over moved execution to line 98 and changed GPIOC ODR13.</p></div><span class="step-state">OBSERVED ✓</span></li>
+        </ol>
+        <p class="editorial-note"><span aria-hidden="true">↳</span> <strong>Identification note:</strong> The working project selected STM32F401CCUx. ST-LINK detected the STM32F401xB/C family but previously reported 128 KB flash; the exact package marking and available flash still require verification.</p>
+      </div>
+    </section>
+    <section class="section-pad" id="firmware">
+      <div class="wrap split">
+        <div class="left-rail"><p class="section-counter">03 / THE FIRMWARE</p><h2>Two lines.<br><em>Real hardware.</em></h2><p>This was the complete application logic inside the CubeMX-generated <code>while(1)</code>. The HAL and GPIO setup were generated separately.</p><div class="chiprow"><span>STM32 HAL</span><span>C</span><span>GPIOC / PC13</span></div></div>
+        <div>
+          <div class="code-window">
+            <div class="code-toolbar"><span class="traffic" aria-hidden="true"><i></i><i></i><i></i></span><span>Core/Src/main.c</span><button class="copy-code" type="button" data-copy="blink-code">Copy code ↗</button></div>
+            <pre><code id="blink-code"><span class="cm">/* USER CODE BEGIN WHILE */</span>
+<span class="kw">while</span> (<span class="num">1</span>)
+{
+    <span class="fn">HAL_GPIO_TogglePin</span>(GPIOC, GPIO_PIN_13);
+    <span class="fn">HAL_Delay</span>(<span class="num">100</span>);
+
+    <span class="cm">/* USER CODE END WHILE */</span>
+    <span class="cm">/* USER CODE BEGIN 3 */</span>
+}
+<span class="cm">/* USER CODE END 3 */</span></code></pre>
+          </div>
+          <div class="two-metrics"><div><span class="metric-number">500<span>ms</span></span><p>Initial half-period<br><strong>1 blink / second</strong></p></div><div><span class="metric-number">100<span>ms</span></span><p>Updated half-period<br><strong>5 blinks / second</strong></p></div></div>
+          <figure class="evidence-image"><img src="assets/blink-code.webp" loading="lazy" alt="STM32CubeIDE screenshot showing HAL_GPIO_TogglePin and HAL_Delay(100) in main while loop"><figcaption><span>FIG. 02</span> The compiled application loop, captured in STM32CubeIDE.</figcaption></figure>
+        </div>
+      </div>
+    </section>
+    <section class="section-pad section-forest" id="debugger">
+      <div class="wrap debug-grid">
+        <div><p class="section-counter light">04 / DEBUGGING</p><h2>Stop the processor.<br><em>See the system.</em></h2><p>A breakpoint at <code>main.c:97</code> halted the Cortex-M4 just before toggling PC13. The LED stopped blinking because the CPU stopped running the application.</p><div class="shortcut-grid"><div><kbd>F6</kbd><span>Step over</span></div><div><kbd>F8</kbd><span>Resume</span></div><div><kbd>F5</kbd><span>Step into</span></div><div><kbd>F7</kbd><span>Step return</span></div></div></div>
+        <figure><img src="assets/breakpoint.webp" loading="lazy" alt="STM32CubeIDE debugger screenshot paused at a breakpoint on the LED toggle line"><figcaption><span>FIG. 03</span> Breakpoint hit at the source instruction.</figcaption></figure>
+      </div>
+    </section>
+    <section class="section-pad" id="registers">
+      <div class="wrap"><p class="section-counter">05 / THE HARDWARE REGISTER</p><div class="section-heading registers-title"><h2>One bit changed.<br><em>We watched it happen.</em></h2><p>In the debugger's SFR view, GPIOC ODR changed from <code>0x00000000</code> to <code>0x00002000</code> after the toggle operation was stepped over.</p></div>
+        <div class="register-lab">
+          <div class="register-lab-head"><div><span class="mini-label">INTERACTIVE REGISTER EXPLORER</span><h3>GPIOC / ODR</h3><p>Memory-mapped address <code>0x40020814</code></p></div><div class="register-readout"><span>32-BIT VALUE</span><strong id="odr-value" aria-live="polite">0x00000000</strong></div></div>
+          <div class="bits" id="bits" role="group" aria-label="32-bit output data register, only bit 13 is interactive"></div>
+          <div class="register-controls"><div><span class="mini-label">OUTPUT FIELD</span><strong id="bit-status">ODR13 = 0</strong><span id="led-status">PC13 LOW · LED ON (active-low)</span></div><button id="toggle-bit" class="btn btn-primary" type="button">Toggle bit 13 <span aria-hidden="true">↔</span></button></div>
+          <p class="simulation-disclaimer">This is an interactive illustration of the observed register states, not a live connection to your microcontroller. Other bits are held at zero for clarity.</p>
+        </div>
+        <div class="observed-grid"><figure><img src="assets/register-before.webp" loading="lazy" alt="First STM32CubeIDE SFR screenshot showing GPIOC ODR13 equal to 0"><figcaption><span>FIG. 04 / BEFORE</span> ODR = 0x0 · ODR13 = 0. Running-state snapshot, not synchronized to a particular instruction.</figcaption></figure><figure><img src="assets/register-after.webp" loading="lazy" alt="Second STM32CubeIDE SFR screenshot showing GPIOC ODR equal to 0x2000 and ODR13 equal to 1"><figcaption><span>FIG. 05 / AFTER</span> ODR = 0x2000 · ODR13 = 1. CPU suspended at main.c:98.</figcaption></figure></div>
+        <div class="bit-explanation"><div class="math-card"><span class="mini-label">BINARY WEIGHT</span><strong>2<sup>13</sup> = 8192</strong><span>DECIMAL 8192 = HEX 0x2000</span></div><div><h3>How one bit becomes a physical output</h3><p>Bit 13 of the GPIOC output latch controls PC13. On this active-low LED circuit, <strong>0 turns the LED on</strong> and <strong>1 turns it off</strong>. The HAL toggle uses GPIO peripheral register operations; the resulting output state is visible in ODR.</p><p><strong>LSB and MSB:</strong> bit 0 is the least significant bit of the word, and bit 31 is the most significant position in a 32-bit value. The ODR register's bits 16–31 are reserved. The selected ODR13 field itself contains one bit.</p></div></div>
+      </div>
+    </section>
+    <section class="section-pad reference" id="reference">
+      <div class="wrap"><p class="section-counter">06 / BENCH REFERENCE</p><h2>The connections and registers <em>worth keeping.</em></h2><div class="reference-columns"><div><h3>SWD programming connections</h3><div class="table-scroll"><table><thead><tr><th>ST-LINK V2</th><th>Black Pill</th></tr></thead><tbody><tr><td>SWDIO</td><td>PA13 / SWDIO</td></tr><tr><td>SWCLK</td><td>PA14 / SWCLK</td></tr><tr><td>GND</td><td>GND</td></tr><tr><td>3.3 V / VTref</td><td>3V3 as applicable*</td></tr></tbody></table></div><p class="table-note">* Verify your programmer's voltage reference versus power output before wiring; do not directly tie two independent power outputs together.</p></div><div><h3>GPIOC register map</h3><div class="table-scroll"><table><thead><tr><th>Register</th><th>Address</th></tr></thead><tbody><tr><td>MODER</td><td>0x40020800</td></tr><tr><td>IDR</td><td>0x40020810</td></tr><tr><td>ODR</td><td>0x40020814</td></tr><tr><td>BSRR</td><td>0x40020818</td></tr></tbody></table></div><p class="table-note">BSRR supports atomic bit set/reset operations; ODR reports the output latch state.</p></div></div></div>
+    </section>
+    <section class="next-section"><div class="wrap next-grid"><div><p class="section-counter light">CONTINUE THE SERIES</p><h2>Next: blink without <em>HAL GPIO calls.</em></h2><p>Compare direct register access, ODR and BSRR, then move on to inputs, interrupts, and hardware timers.</p></div><a class="btn btn-light" href="STM32-Black-Pill-Lab-01.pdf" download>Keep this lab note <span aria-hidden="true">↗</span></a></div></section>
+  </main>
+  <footer class="site-footer"><div class="wrap footer-row"><div><span class="footer-mark">t.</span> <strong>THE THINKING WORKSHOP</strong><p>Learn by building. Understand by measuring.</p></div><div><a href="https://thethinkingworkshop.com/">Back to the website ↗</a><span>LAB NOTE 001 · OCT 2026</span></div></div></footer>
+</body>
+</html>
