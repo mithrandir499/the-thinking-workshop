@@ -117,19 +117,134 @@
     section{padding:70px 0}
     footer{flex-direction:column}
   }
+
+  /* Electronics Lab — an editorial addition to the original homepage */
+  .links{align-items:center;flex-wrap:wrap}
+  a:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
+  .skip-link{
+    position:absolute;top:-70px;left:18px;z-index:10;
+    background:var(--ink);color:var(--paper);padding:10px 15px;
+    font:600 12px Arial,Helvetica,sans-serif;
+  }
+  .skip-link:focus{top:12px}
+  .electronics-section{scroll-margin-top:20px}
+  .lab-intro{
+    max-width:620px;margin:-28px 0 48px 0;color:var(--muted);
+    font-size:clamp(18px,2vw,23px);line-height:1.5;
+  }
+  .experiment-feature{
+    display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+    border:1px solid var(--line);background:var(--panel);overflow:hidden;
+  }
+  .experiment-visual{
+    position:relative;display:block;min-height:480px;overflow:hidden;
+    background:#ded9cb;isolation:isolate;
+  }
+  .experiment-visual img{
+    display:block;width:100%;height:100%;min-height:480px;
+    object-fit:cover;object-position:center 48%;
+    transition:transform .45s ease;
+  }
+  .experiment-visual:hover img{transform:scale(1.035)}
+  .photo-credit{
+    position:absolute;bottom:0;left:0;right:0;padding:13px 20px;
+    color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.69));
+    font:11px Arial,Helvetica,sans-serif;letter-spacing:.065em;
+  }
+  .experiment-copy{
+    display:flex;flex-direction:column;align-items:flex-start;
+    padding:clamp(34px,5vw,76px);
+  }
+  .experiment-kicker{
+    font:700 11px Arial,Helvetica,sans-serif;
+    color:var(--accent);text-transform:uppercase;letter-spacing:.15em;
+  }
+  .experiment-copy h3{
+    font-weight:400;letter-spacing:-.035em;line-height:1.1;
+    font-size:clamp(34px,3.8vw,54px);margin:26px 0 23px;
+  }
+  .experiment-copy h3 em{font-weight:400}
+  .experiment-description{
+    max-width:570px;margin:0 0 31px;color:#4b4943;
+    font-size:18px;line-height:1.65;
+  }
+  .experiment-meta{
+    display:flex;gap:32px;flex-wrap:wrap;margin:0 0 32px;
+    padding-top:20px;width:100%;border-top:1px solid var(--line);
+  }
+  .experiment-meta div{display:flex;flex-direction:column;gap:4px}
+  .experiment-meta dt{
+    color:var(--muted);text-transform:uppercase;letter-spacing:.12em;
+    font:10px Arial,Helvetica,sans-serif;
+  }
+  .experiment-meta dd{margin:0;font:13px Arial,Helvetica,sans-serif}
+  .read-experiment{
+    margin-top:auto;display:inline-flex;align-items:center;gap:28px;
+    padding:12px 0 8px;border-bottom:1px solid var(--accent);
+    font:700 12px Arial,Helvetica,sans-serif;
+    letter-spacing:.085em;text-transform:uppercase;color:var(--accent);
+    transition:gap .2s ease;
+  }
+  .read-experiment:hover{gap:36px}
+  .archive{
+    margin-top:68px;display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:54px;
+  }
+  .archive h3{font-size:31px;font-weight:400;line-height:1.15;margin:0 0 16px}
+  .archive-intro{margin:0;color:var(--muted);font-size:16px}
+  .archive-list{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
+  .archive-list li{
+    display:grid;grid-template-columns:58px minmax(0,1fr) auto;
+    gap:18px;align-items:center;padding:23px 4px;
+    border-bottom:1px solid var(--line);
+  }
+  .archive-number,.archive-date{
+    font:11px Arial,Helvetica,sans-serif;color:var(--muted);
+    letter-spacing:.04em;
+  }
+  .archive-list a{font-size:19px;line-height:1.3}
+  .archive-list a:hover{color:var(--accent)}
+  .archive-footnote{
+    margin:18px 0 0;color:var(--muted);
+    font:12px/1.7 Arial,Helvetica,sans-serif;
+  }
+  @media(max-width:900px){
+    .experiment-feature{grid-template-columns:1fr 1fr}
+    .experiment-copy{padding:35px}
+  }
+  @media(max-width:760px){
+    nav{align-items:flex-start;flex-direction:column;gap:17px}
+    .links{display:flex;flex-wrap:wrap;gap:12px 20px;font-size:11px}
+    .experiment-feature{grid-template-columns:1fr}
+    .experiment-visual,.experiment-visual img{min-height:360px;max-height:520px}
+    .experiment-copy{padding:32px 27px 39px}
+    .lab-intro{margin:-4px 0 34px}
+    .archive{grid-template-columns:1fr;gap:26px;margin-top:52px}
+    .archive-list li{grid-template-columns:38px minmax(0,1fr);gap:10px 14px}
+    .archive-date{grid-column:2}
+  }
+  @media(max-width:430px){
+    .wrap{padding:0 20px}
+    .experiment-visual,.experiment-visual img{min-height:310px}
+    .experiment-copy h3{font-size:34px}
+    .experiment-meta{gap:20px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .experiment-visual img,.read-experiment{transition:none}
+  }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#workshop">Skip to main content</a>
 
 <header>
   <div class="wrap">
-    <nav>
-      <a class="brand" href="#">The Thinking Workshop</a>
+    <nav aria-label="Primary navigation">
+      <a class="brand" href="/">The Thinking Workshop</a>
       <div class="links">
-       <a href="/stm32-blackpill/">
-  STM32 Black Pill — My First Embedded Systems Lab
-</a>
         <a href="#workshop">Workshop</a>
+        <a href="#electronics-lab">Electronics Lab</a>
         <a href="#notes">Notes</a>
         <a href="#about">About</a>
       </div>
@@ -169,14 +284,14 @@
           <h3>Music</h3>
           <p>Bach, Mozart, Beethoven, and the strange architecture of sound, emotion, form, and time.</p>
         </a>
-        <a class="card" href="#">
+        <a class="card" href="#electronics-lab">
           <span class="number">03</span>
           <h3>Electronics</h3>
           <p>Circuits, measurements, microcontrollers, machines, experiments, failures, and things that work.</p>
         </a>
         <a class="card" href="#">
           <span class="number">04</span>
-          <h3>Art & Literature</h3>
+          <h3>Art &amp; Literature</h3>
           <p>Books, paintings, films, architecture, and works that remain in the mind long after they are finished.</p>
         </a>
         <a class="card" href="#">
@@ -192,6 +307,51 @@
       </div>
     </section>
 
+    <section id="electronics-lab" class="electronics-section" aria-labelledby="electronics-title">
+      <div class="section-head">
+        <div class="section-label">02 / Electronics Lab</div>
+        <h2 id="electronics-title">Where ideas meet<br>the workbench.</h2>
+      </div>
+      <p class="lab-intro">Experiments in circuits, microcontrollers, measurement, and the architecture of machines.</p>
+
+      <article class="experiment-feature" aria-labelledby="experiment-001-title">
+        <a class="experiment-visual" href="/stm32-blackpill/" aria-label="Read Experiment 001: STM32 Black Pill">
+          <img src="/stm32-blackpill/assets/board.webp"
+               alt="Close-up photograph of the STM32 Black Pill development board on the workbench"
+               width="780" height="1040" loading="lazy" decoding="async">
+          <span class="photo-credit">Fig. 01 — The Black Pill on the workbench</span>
+        </a>
+        <div class="experiment-copy">
+          <span class="experiment-kicker">Electronics / Embedded Systems &nbsp;·&nbsp; Experiment 001</span>
+          <h3 id="experiment-001-title">STM32 Black Pill:<br><em>From a Blinking LED to Reading Silicon</em></h3>
+          <p class="experiment-description">My first hands-on exploration of the STM32 Black Pill—connecting an ST-LINK V2 programmer, configuring GPIO using STM32CubeMX, writing firmware in C, flashing the microcontroller, setting hardware breakpoints, and observing the GPIOC output register change in real time.</p>
+          <dl class="experiment-meta">
+            <div><dt>Published</dt><dd><time datetime="2026-10">October 2026</time></dd></div>
+            <div><dt>Platform</dt><dd>STM32 Black Pill</dd></div>
+            <div><dt>Notebook</dt><dd>Lab 01</dd></div>
+          </dl>
+          <a class="read-experiment" href="/stm32-blackpill/">Read experiment <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
+
+      <div class="archive" id="experiment-archive">
+        <div>
+          <h3>Experiment archive.</h3>
+          <p class="archive-intro">A growing collection of things tried, measured, understood—and sometimes reconsidered.</p>
+        </div>
+        <div>
+          <ol class="archive-list">
+            <li>
+              <span class="archive-number">001</span>
+              <a href="/stm32-blackpill/">STM32 Black Pill — From a Blinking LED to Reading Silicon</a>
+              <time class="archive-date" datetime="2026-10">Oct 2026</time>
+            </li>
+          </ol>
+          <p class="archive-footnote">Future notebooks may explore Arduino, ESP32, STM32, analog electronics, and instrumentation. New entries will be added when experiments are documented.</p>
+        </div>
+      </div>
+    </section>
+
     <section id="notes">
       <div class="quote">
         “The important thing is not to stop questioning.”
@@ -201,7 +361,7 @@
 
     <section id="about">
       <div class="section-head">
-        <div class="section-label">02 / About</div>
+        <div class="section-label">03 / About</div>
         <h2>A workshop, not a showroom.</h2>
       </div>
       <div class="manifesto">
